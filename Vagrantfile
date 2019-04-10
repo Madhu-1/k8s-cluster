@@ -28,7 +28,12 @@ Vagrant.configure("2") do |config|
   config.vm.define "master" do |node|
     node.vm.hostname = "master"
     # master gets this repo synced to /vagrant
-    node.vm.synced_folder ".", "/vagrant", type: "sshfs"
+    node.vm.synced_folder ".", "/vagrant"
+    node.vm.provider "libvirt" do |provider|
+      for _ in 0..DISKS-1 do
+        provider.storage :file, :size => DISKSIZE
+      end
+    end
   end
 
   (0..WORKERS-1).each do |i|
