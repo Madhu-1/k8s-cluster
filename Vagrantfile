@@ -1,19 +1,19 @@
 # -*- mode: ruby -*-
 # vi: set ft=ruby :
 
-WORKERS = 3
+WORKERS = 2
 DISKS = 2
-DISKSIZE = "30G"
+DISKSIZE = "100G"
 
 Vagrant.configure("2") do |config|
   #config.vm.box = "fedora/26-cloud-base"
   config.vm.box = "centos/7"
   config.vm.provider "libvirt" do |lv|
     lv.channel :type => "unix", :target_name => "org.qemu.guest_agent.0", :target_type => "virtio"
-    lv.cpus = "2"
+    lv.cpus = "4"
     lv.cpu_mode = "host-passthrough"
     lv.graphics_type = "none"
-    lv.memory = "2048"
+    lv.memory = "4096"
     lv.nested = false
     lv.random :model => "random"
     # lv.usb_controller :model => "none"  # (requires vagrant-libvirt 0.44 which is not in Fedora yet)
