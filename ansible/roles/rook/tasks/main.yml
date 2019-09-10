@@ -34,7 +34,7 @@
   shell: "kubectl get -n rook-ceph po | grep -c Running"
   register: task_result
   ignore_errors: true
-  until: task_result.stdout == "2"
+  until: task_result.stdout >= "2"
   delay: 10
   retries: 60
   changed_when: false
@@ -47,7 +47,7 @@
   shell: "kubectl get -n rook-ceph po -l app=rook-ceph-mon | grep -c Running"
   register: task_result
   ignore_errors: true
-  until: task_result.stdout == "1"
+  until: task_result.stdout >= "1"
   delay: 10
   retries: 60
   changed_when: false

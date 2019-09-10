@@ -1,14 +1,14 @@
 ---
 - name: Join on workers
   command: >
-          kubeadm join --ignore-preflight-errors=all
-          --token {{ k8s_init_token }}
-          --discovery-token-unsafe-skip-ca-verification master:6443
+    kubeadm join --ignore-preflight-errors=all
+    --token {{ k8s_init_token }}
+    --discovery-token-unsafe-skip-ca-verification master:6443
 
 - name: Add feature gates to kubelet
   lineinfile:
     path: /etc/sysconfig/kubelet
-    regexp: '^KUBELET_EXTRA_ARGS'
+    regexp: "^KUBELET_EXTRA_ARGS"
     line: >
       KUBELET_EXTRA_ARGS=--feature-gates={{ feature_gates|join(',') }}
     state: present

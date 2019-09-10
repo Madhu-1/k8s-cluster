@@ -3,6 +3,68 @@
 # This playbook in called by Vagrant for initial VM provisioning.
 # It installs the basic kubernetes cluster
 
+#- hosts: all
+#  gather_facts: false
+#  become: true
+#  tasks:
+#    - name: update kernel
+#      shell: |
+#             rpm --import https://www.elrepo.org/RPM-GPG-KEY-elrepo.org
+#             rpm -Uvh http://www.elrepo.org/elrepo-release-7.0-3.el7.elrepo.noarch.rpm
+#             yum --enablerepo=elrepo-kernel install kernel-ml -y
+
+#- hosts: all
+#  gather_facts: false
+#  become: true
+#  tasks:
+#    - name: set kernel in grub
+#      shell: |
+#              grub2-set-default 0
+#              grub2-mkconfig -o /boot/grub2/grub.cfg
+
+#- hosts: all
+#  become: true
+#  tasks:
+#    - name: Reboot
+#      shell: sleep 2 && systemctl reboot
+#      async: 1
+#      poll: 0
+
+#    - name: Wait for host to be available after reboot
+#      wait_for_connection:
+#        delay: 15
+
+#- hosts: all
+#  gather_facts: false
+#  become: true
+#  tasks:
+#    - name: remove old kernel
+#      shell: |
+#              yum remove -y kernel-3.10*
+#              yum install yum-utils
+#              package-cleanup --oldkernel
+
+#- hosts: all
+#  gather_facts: false
+#  become: true
+#  tasks:
+#    - name: set kernel in grub
+#      shell: |
+#              grub2-set-default 1
+#              grub2-mkconfig -o /boot/grub2/grub.cfg
+
+#- hosts: all
+#  become: true
+#  tasks:
+#    - name: Reboot
+#      shell: sleep 2 && systemctl reboot
+#      async: 1
+#      poll: 0
+
+#    - name: Wait for host to be available after reboot
+#      wait_for_connection:
+#        delay: 15
+
 - hosts: all
   gather_facts: false
   become: true
@@ -25,7 +87,6 @@
   roles:
     - k8s-worker
 
-
 - hosts: master
   become: false
   tasks:
@@ -37,7 +98,7 @@
 
     - name: Wait for workers to be ready
       shell: test "$(kubectl get nodes {{ item }} --no-headers |
-             awk '{ print $2 }')" = "Ready"
+        awk '{ print $2 }')" = "Ready"
       register: task_result
       until: task_result.rc == 0
       delay: 10
@@ -68,13 +129,13 @@
 
         - name: Create service account for Tiller
           command: >-
-                  kubectl
-                  --kubeconfig=../kubeconfig
-                  apply -f files/helm-tiller-sa.yml
+            kubectl
+            --kubeconfig=../kubeconfig
+            apply -f files/helm-tiller-sa.yml
 
         - name: Install Tiller
           command: >-
-                  {{ helm }} init
-                  --kubeconfig=../kubeconfig
-                  --service-account tiller
+            {{ helm }} init
+            --kubeconfig=../kubeconfig
+            --service-account tiller
       when: which_helm.rc == 0
