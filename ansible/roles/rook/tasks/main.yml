@@ -41,7 +41,7 @@
 
 - name: install ceph cluster
   shell: >
-     kubectl create -f /root/rook/cluster/examples/kubernetes/ceph/cluster.yaml
+     kubectl create -f /root/rook/cluster/examples/kubernetes/ceph/cluster-test.yaml
 
 - name: Wait for monintors to be running
   shell: "kubectl get -n rook-ceph po -l app=rook-ceph-mon | grep -c Running"
@@ -58,4 +58,4 @@
 
 - name: create pool
   shell: >
-    kubectl create -f /root/rook/cluster/examples/kubernetes/ceph/pool.yaml
+    kubectl create -f /root/rook/cluster/examples/kubernetes/ceph/pool-test.yaml
