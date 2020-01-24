@@ -1,9 +1,8 @@
 ---
-
 k8s_packages:
-  - docker
+  #- docker
   - iproute
-  - kubernetes-cni-0.6.0
+  - kubernetes-cni-0.6.2
   - kubeadm-{{ k8s_version }}
   - kubectl-{{ k8s_version }}
   - kubelet-{{ k8s_version }}

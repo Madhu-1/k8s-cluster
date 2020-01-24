@@ -7,7 +7,8 @@ DISKSIZE = "50G"
 
 Vagrant.configure("2") do |config|
   #config.vm.box = "fedora/26-cloud-base"
-  config.vm.box = "centos/7"
+  config.vm.box = "centos/8"
+  config.vm.box_version = "1905.1"
   #config.vm.box = "sys/centos-8"
   #config.vm.box_version = "2019.10.03.1570137627"
   #config.vm.box = "generic/rhel8"
@@ -56,6 +57,7 @@ Vagrant.configure("2") do |config|
             "workers" => (0..WORKERS-1).map {|j| "worker#{j}"}
           }
           ansible.limit = "all"
+          ansible.extra_vars = { ansible_python_interpreter:"/usr/bin/python3.6" }
           ansible.playbook = "ansible/initial_provisioning.yml"
         end
       end

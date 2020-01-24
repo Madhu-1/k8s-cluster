@@ -1,21 +1,15 @@
 ---
-
 - name: "Installing Prerequisite packages"
   yum:
-        name:
-          - git
-          - yum-utils
-          - python-setuptools
-          - python-devel
-        state: latest
-- name: insatll pip
-  easy_install:
-    name: pip
+    name:
+      - git
+      - yum-utils
+      - python3-devel
     state: latest
 - name: install openshift
   shell: |
-        sudo pip install -U setuptools
-        sudo pip install --ignore-installed openshift
+    sudo pip3 install -U setuptools
+    sudo pip3 install --ignore-installed openshift
 
 - name: git clone rook
   git:
@@ -24,11 +18,11 @@
 
 - name: install ceph common
   shell: >
-     kubectl create -f /root/rook/cluster/examples/kubernetes/ceph/common.yaml
+    kubectl create -f /root/rook/cluster/examples/kubernetes/ceph/common.yaml
 
 - name: install operator
   shell: >
-     kubectl create -f /root/rook/cluster/examples/kubernetes/ceph/operator.yaml
+    kubectl create -f /root/rook/cluster/examples/kubernetes/ceph/operator.yaml
 
 - name: Wait for operator to be running
   shell: "kubectl get -n rook-ceph po | grep -c Running"
@@ -41,7 +35,7 @@
 
 - name: install ceph cluster
   shell: >
-     kubectl create -f /root/rook/cluster/examples/kubernetes/ceph/cluster-test.yaml
+    kubectl create -f /root/rook/cluster/examples/kubernetes/ceph/cluster-test.yaml
 
 - name: Wait for monintors to be running
   shell: "kubectl get -n rook-ceph po -l app=rook-ceph-mon | grep -c Running"
@@ -54,7 +48,7 @@
 
 - name: install tool-box
   shell: >
-     kubectl create -f /root/rook/cluster/examples/kubernetes/ceph/toolbox.yaml
+    kubectl create -f /root/rook/cluster/examples/kubernetes/ceph/toolbox.yaml
 
 - name: create pool
   shell: >
